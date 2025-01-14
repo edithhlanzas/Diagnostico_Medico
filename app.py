@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy# aqui estan los problemas con estas dependecias
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://uqc7o8xpmfjx3bp8:h6IFc0cg54goGKKpAi7A@byzou5xdwhdq5g0tauyq-mysql.services.clever-cloud.com:3306/byzou5xdwhdq5g0tauyq'
@@ -52,4 +52,4 @@ def historial():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Crea las tablas en la base de datos
-    app.run(debug=True)
+    app.run(debug=True, port=5001)# puerto opcional en caso de que no funcione el predeterminado 
