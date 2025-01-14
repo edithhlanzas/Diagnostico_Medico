@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Diagnósticos</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <h1>Historial de Diagnósticos</h1>
+    <table id="historial" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Diagnóstico</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for diagnostico in diagnosticos %}
+            <tr>
+                <td>{{ diagnostico.id }}</td>
+                <td>{{ diagnostico.nombre }}</td>
+                <td>{{ diagnostico.telefono }}</td>
+                <td>{{ diagnostico.diagnostico }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $('#historial').DataTable();
+        });
+    </script>
+</body>
+</html>

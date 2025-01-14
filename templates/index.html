@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Diagnóstico</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        input[type="text"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 80%;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-stethoscope"></i> Formulario de Diagnóstico</h1>
+    <form action="/diagnostico" method="POST">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required>
+        <label for="sintomas">Síntomas:</label>
+        <input type="text" id="sintomas" name="sintomas" required>
+        <input type="submit" value="Enviar">
+    </form>
+
+    <h2><i class="fas fa-history"></i> Historial de Diagnósticos</h2>
+    <table id="historial" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Diagnóstico</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for diagnostico in diagnosticos %}
+            <tr>
+                <td>{{ diagnostico.id }}</td>
+                <td>{{ diagnostico.nombre }}</td>
+                <td>{{ diagnostico.telefono }}</td>
+                <td>{{ diagnostico.diagnostico }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#historial').DataTable();
+        });
+    </script>
+</body>
+</html>
