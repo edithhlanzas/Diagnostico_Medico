@@ -1,15 +1,10 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-import pymysql
-#fixing
-# Configuración para usar pymysql
-pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://uqc7o8xpmfjx3bp8:h6IFc0cg54goGKKpAi7A@byzou5xdwhdq5g0tauyq-mysql.services.clever-cloud.com:3306/byzou5xdwhdq5g0tauyq'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
 
+db = SQLAlchemy(app)
 # Modelo para almacenar diagnósticos
 class Diagnostico(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,24 +27,20 @@ def index():
 
 @app.route('/diagnostico', methods=['POST'])
 def diagnostico():
-    sintomas = request.form.get('sintomas', '').strip().lower()
-    nombre = request.form.get('nombre', '').strip()
-    telefono = request.form.get('telefono', '').strip()
+    sintomas = request.form.get('sintomas')
+    nombre = request.form.get('nombre')
+    telefono = request.form.get('telefono')
     
-    # Verifica si los valores son válidos
+    # Verifica si los valores son nulos
     if not nombre or not telefono:
         return "Nombre y teléfono son obligatorios", 400
     
-    resultado = diagnosticos.get(sintomas, "No hemos encontrado un diagnóstico asociado a este síntoma.")
+    resultado = diagnosticos.get(sintomas.lower(), "Síntoma no encontrado.")
     
     # Guardar en la base de datos
-    try:
-        nuevo_diagnostico = Diagnostico(nombre=nombre, telefono=telefono, diagnostico=resultado)
-        db.session.add(nuevo_diagnostico)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        return f"Error al guardar el diagnóstico: {str(e)}", 500
+    nuevo_diagnostico = Diagnostico(nombre=nombre, telefono=telefono, diagnostico=resultado)
+    db.session.add(nuevo_diagnostico)
+    db.session.commit()
     
     return render_template('result.html', resultado=resultado)
 
