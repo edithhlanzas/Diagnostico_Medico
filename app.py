@@ -2,7 +2,8 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://udyzjvegccpvuqur:99adIz1nfv0ifmyBIF3r@bstija96pk3dlltxcvc1-mysql.services.clever-cloud.com:3306/bstija96pk3dlltxcvc1'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://uqc7o8xpmfjx3bp8:h6IFc0cg54goGKKpAi7A@byzou5xdwhdq5g0tauyq-mysql.services.clever-cloud.com:3306/byzou5xdwhdq5g0tauyq'
+
 db = SQLAlchemy(app)
 # Modelo para almacenar diagnósticos
 class Diagnostico(db.Model):
