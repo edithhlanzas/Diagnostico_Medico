@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
-
+#fixing
 # Configuración para usar pymysql
 pymysql.install_as_MySQLdb()
 
