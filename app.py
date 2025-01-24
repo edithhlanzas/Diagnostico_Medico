@@ -1,8 +1,13 @@
 from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy# aqui estan los problemas con estas dependecias
+from flask_sqlalchemy import SQLAlchemy
+import pymysql
+
+# Configuración para usar pymysql
+pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://uqc7o8xpmfjx3bp8:h6IFc0cg54goGKKpAi7A@byzou5xdwhdq5g0tauyq-mysql.services.clever-cloud.com:3306/byzou5xdwhdq5g0tauyq'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://uqc7o8xpmfjx3bp8:h6IFc0cg54goGKKpAi7A@byzou5xdwhdq5g0tauyq-mysql.services.clever-cloud.com:3306/byzou5xdwhdq5g0tauyq'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Modelo para almacenar diagnósticos
@@ -27,20 +32,24 @@ def index():
 
 @app.route('/diagnostico', methods=['POST'])
 def diagnostico():
-    sintomas = request.form.get('sintomas')
-    nombre = request.form.get('nombre')
-    telefono = request.form.get('telefono')
+    sintomas = request.form.get('sintomas', '').strip().lower()
+    nombre = request.form.get('nombre', '').strip()
+    telefono = request.form.get('telefono', '').strip()
     
-    # Verifica si los valores son nulos
+    # Verifica si los valores son válidos
     if not nombre or not telefono:
         return "Nombre y teléfono son obligatorios", 400
     
-    resultado = diagnosticos.get(sintomas.lower(), "Síntoma no encontrado.")
+    resultado = diagnosticos.get(sintomas, "No hemos encontrado un diagnóstico asociado a este síntoma.")
     
     # Guardar en la base de datos
-    nuevo_diagnostico = Diagnostico(nombre=nombre, telefono=telefono, diagnostico=resultado)
-    db.session.add(nuevo_diagnostico)
-    db.session.commit()
+    try:
+        nuevo_diagnostico = Diagnostico(nombre=nombre, telefono=telefono, diagnostico=resultado)
+        db.session.add(nuevo_diagnostico)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return f"Error al guardar el diagnóstico: {str(e)}", 500
     
     return render_template('result.html', resultado=resultado)
 
@@ -52,4 +61,4 @@ def historial():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Crea las tablas en la base de datos
-    app.run(debug=True, port=5001)# puerto opcional en caso de que no funcione el predeterminado 
+    app.run(debug=True, port=5001)
