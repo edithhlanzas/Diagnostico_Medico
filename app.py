@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://udyzjvegccpvuqur:99adIz1nfv0ifmyBIF3r@bstija96pk3dlltxcvc1-mysql.services.clever-cloud.com:3306/bstija96pk3dlltxcvc1'
